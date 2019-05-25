@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, render_template
 import requests
 import json
 from datetime import datetime
@@ -115,9 +115,9 @@ def index():
     filteredData = list(filter(lambda d: datetime.fromtimestamp(d['timestamp'] / 1000).strftime('%H:%M:%S') == '00:00:00', data))
     # sort the data into ascending order
     sortedData = sorted(filteredData, key=lambda k: k['timestamp'])
+    # make the final data
     finalJSON = makeJSON(sortedData)
-    print(finalJSON)
-    return 'hellio'
+    return render_template('index.html',data=finalJSON)
 
 if __name__ == "__main__":
   app.run()

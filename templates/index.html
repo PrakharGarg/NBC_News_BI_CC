@@ -1,0 +1,17 @@
+<style>
+  div {
+    font-family: 'Arial, Helvetica, sans-serif';
+  }
+</style>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/json2html/1.2.0/json2html.min.js"></script>
+
+
+<script>
+    var t = {'<>':'div','html':'<b>${date}</b> <ul><li><b>price</b>: ${price}</li> <li><b>direction</b>: ${direction}</li> <li><b>change</b>: ${change}</li> <li><b>dayOfWeek</b>: ${dayOfWeek}</li> <li><b>highSinceStart</b>: ${highSinceStart}</li> <li><b>lowSinceStart</b>: ${lowSinceStart}</li></ul> </br>'};
+
+    var d = `{{data|tojson|safe}}`;
+    console.log(d);
+
+    document.write( json2html.transform(d,t) );
+</script>
