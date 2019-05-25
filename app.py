@@ -1,6 +1,7 @@
 from flask import Flask
 import requests
 import json
+from datetime import datetime
 
 app = Flask(__name__)
 
@@ -28,15 +29,24 @@ def getData():
 #### { string } JSON obj and result
 #######################
 def makeJSON(data):
-
-
-  return jsonObject
+  finalData = []
+  for object in data:
+    newObject = {}
+    newObject['date'] = datetime.fromtimestamp(object['timestamp'] / 1000).strftime('%Y-%m-%d %H:%M:%S')
+    newObject['price'] = object['price']
+    finalData.append(newObject)
+  return finalData
 
 # Main and only route in this app. This will also be the homepage
 @app.route("/")
 def index():
     data = getData()
-    sortedData = sorted(data, key=lambda k: k['timestamp'])
+    # filter the data to only have the first objects of each day
+    filteredData = list(filter(lambda d: datetime.fromtimestamp(d['timestamp'] / 1000).strftime('%H:%M:%S') == '00:00:00', data))
+    # sort the data into ascending order
+    sortedData = sorted(filteredData, key=lambda k: k['timestamp'])
+    finalJSON = makeJSON(sortedData)
+    print(finalJSON)
     return 'hellio'
 
 if __name__ == "__main__":
